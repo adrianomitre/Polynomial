@@ -1,0 +1,47 @@
+* Multi-variate polynomials
+
+* Let the user specify a precision in substitute in case of BigDecimal argument.
+
+* Update comments/documentation so that Chebyshev/Legendre/Ultraspherical time complexity is dependent on polynomial multiplication complexity (FFT multiplication will thus make them faster)
+
+* Make the parse_term handle rational numbers in Rational#to_s notation (e.g. '(1/2)')
+
+* Make the parse_term handle complex numbers in Complex#to_s notation (e.g. '(1+1i)' and '(2 + 3i)')
+
+* Make the parse_term automatically handle scientific notated numbers outside the Float range, parsing them as BigDecimal.
+
+* Irreprodutible incorrect behaviour for Chebyshev.first_kind(n) for n >= 10
+
+* Verify that BigDecimal coefficients polynomials work as expected and include Examples (comments/RDOC) and tests for this case
+
+* Make .from_string and #to_s more compatible (such that that p=Polynomial.from_string(q.to_s) always verify p.equal_in_epsilon(q, eps).
+  - Currently there is an issue when one or more of the coefficients are BigDecimal, because BigDecimal#to_s uses scientific notation.
+  - Possible solution: let .from_string digest numbers in scientific notation.
+
+* Newton method root finding (also for non-polynomial functions, using numerical derivative)
+
+* Compare to poly-ruby, in terms of features, precision, speed and interface
+
+* FFT-based polynomial multiplication
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+OBSOLETE CODE:
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+  # Evaluates Polynomial at n equidistant points: x0, x0 + dx, ... , x0 + n*dx
+  # using forward differencing algorithm (approximate if degree > 1)
+  #
+  # TODO: implement it
+  #
+  # ref: http://www.cosc.brocku.ca/~cspress/HelloWorld/1999/04-apr/rendering_bezier_forms.html
+  #      http://www.niksula.cs.hut.fi/~hkankaan/Homepages/bezierfast.html
+  #
+#  def sub_fd(x0, dx, n)
+#    ds = self.derivatives.map {|d| d.substitute_single(x0)}
+#
+#    total = @coefs.last
+#    @coefs[0..-2].reverse.each do |a|
+#      total = total * x + a
+#    end
+#    total
+#  end
