@@ -1,0 +1,34 @@
+* Make a decent website out of 'rake website'
+
+* Exclude zero (null) polynomials from Polynomial#derivatives
+  * change tests accordingly
+
+* Multivariate class
+  * document it better
+  * make its interface more clear and intuitive
+  * extend its functionality to make it rivals Polynomial (#to_s, etc)
+    * see commented test stuff in test_multivariate.rb
+
+* Allow Polynomial#to_s order to be reversed (e.g., x^2+1 instead of 1+x^2)
+
+* Let the user specify a precision in substitute in case of BigDecimal argument.
+
+* Extend .parse_term so that it can handle:
+  * rational numbers in Rational#to_s notation (e.g. '(1/2)')
+  * complex numbers in Complex#to_s notation (e.g. '(1+1i)' and '(2 + 3i)')
+  * scientific notated numbers automatically outside the Float range, parsing them as BigDecimal.
+
+* Write comments/RDoc examples with BigDecimal coefficients polynomials
+
+* Make .from_string and #to_s more compatible (such that that p=Polynomial.from_string(q.to_s) always verify p.equal_in_epsilon(q, eps).
+  - Currently there is an issue when one or more of the coefficients are BigDecimal, because BigDecimal#to_s uses scientific notation.
+  - Possible solution: let .from_string digest numbers in scientific notation.
+
+* Newton method root finding (also for non-polynomial functions, using numerical derivative)
+
+* Compare to poly-ruby, in terms of features, precision, speed and interface
+
+* FFT-based polynomial multiplication
+
+* Update comments/documentation so that Chebyshev/Legendre/Ultraspherical time complexity is dependent on polynomial multiplication complexity (FFT multiplication will thus make them faster)
+

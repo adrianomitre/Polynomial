@@ -1,0 +1,103 @@
+require File.dirname(__FILE__) + '/test_helper.rb'
+
+require 'polynomial/chebyshev'
+
+class TestChebyshev < Test::Unit::TestCase
+
+  @@epsilon = 1e-11
+
+  @@first_kind_in_out = {
+    0 => [1],
+    1 => [0,1],
+    2 => [-1,0,2],
+    3 => [0,-3,0,4],
+    4 => [1,0,-8,0,8],
+    5 => [0,5,0,-20,0,16],
+    6 => [-1,0,18,0,-48,0,32],
+    7 => [0,-7,0,56,0,-112,0,64],
+    8 => [1,0,-32,0,160,0,-256,0,128],
+    9 => [0,9,0,-120,0,432,0,-576,0,256],
+    10 => [-1,0,50,0,-400,0,1120,0,-1280,0,512],
+    33 => [0, 33, 0, -5984, 0, 323136, 0, -8186112, 0, 118243840, 0, -1083543552, 0, 6723526656, 0, -29455450112, 0, 93564370944, 0, -218864025600, 0, 379364311040, 0, -485826232320, 0, 453437816832, 0, -299708186624, 0, 132875550720, 0, -35433480192, 0, 4294967296],
+    117 => [0, 117, 0, -266916, 0, 182570544, 0, -59396283648, 0, 11252295957760, 0, -1392011303574528, 0, 121069290813456384, 0, -7794556246656811008, 0, 385830534209512144896, 0, -15117336720489657139200, 0, 479723485263538453217280, 0, -12560033068718097684234240, 0, 275483391973883609207537664, 0, -5126659590807429445423464448, 0, 81824517606975721197891747840, 0, -1130410109907982866613455028224, 0, 13624867309572732884712173862912, 0, -144263300924887759955775958548480, 0, 1349923260306156937003597257768960, 0, -11222034120763733781298460334489600, 0, 83262019013081166250511991067115520, 0, -553604830735923944815142850904719360, 0, 3310445048441080558894591593288826880, 0, -17859866348296375411168601454264975360, 0, 87173157176208499030703888050579046400, 0, -385886509100016289042582544437229912064, 0, 1552507116437220831968125998809871286272, 0, -5687298796914802239667747766683972927488, 0, 19000424301472259111471448052605854416896, 0, -57967396173983163390929841516424640593920, 0, 161675185831699489588691754699361401962496, 0, -412590438394874683108059244967545943359488, 0, 964033428172639884569792274299169848426496, 0, -2063232104076405216546475369508671064113152, 0, 4045553145247853365777402685311119733555200, 0, -7267343758706807816833129008945206636052480, 0, 11957379913488674657529090500258399350947840, 0, -18011476770588345970620395780569408752058368, 0, 24819642631241357126979301362698515409534976, 0, -31256154952683046300772375620665446215188480, 0, 35925284272775205069159360126962383242395648, 0, -37624952438486873601670279016307356413722624, 0, 35833288036654165334924075253626053727354880, 0, -30957815272511698038619249189981129550069760, 0, 24190734099562256383599311164796286114201600, 0, -17036893075247264324859685811788153639403520, 0, 10768527086364797273123092668320515998351360, 0, -6077645746391778080239684999813594695598080, 0, 3044044218338837303075374875336190470389760, 0, -1342868403884789080309483041273850259046400, 0, 516937856861788113291412877670567307640832, 0, -171623762110595558648434048859217472782336, 0, 48406702133757721670071141985933133348864, 0, -11369727956650552859202038639616105381888, 0, 2163454860932487122376194916134902824960, 0, -320354331577881795025074562520221483008, 0, 34627427749568765454669880019568820224, 0, -2429994929794299330152272282075004928, 0, 83076749736557242056487941267521536],
+  }
+
+  @@second_kind_in_out = {
+    0 => [1],
+    1 => [0,2],
+    2 => [-1,0,4],
+    3 => [0,-4,0,8],
+    4 => [1,0,-12,0,16],
+    5 => [0,6,0,-32,0,32],
+    6 => [-1,0,24,0,-80,0,64],
+    7 => [0,-8,0,80,0,-192,0,128],
+    8 => [1,0,-40,0,240,0,-448,0,256],
+    9 => [0,10,0,-160,0,672,0,-1024,0,512],
+  }
+  
+  def test_first_kind_invalid_degree
+    assert_raise(RangeError) { Polynomial::Chebyshev.first_kind(-1) }
+  end
+
+  def my_test_in_out_rand(in_out_hash, method_name)
+    keys, size = in_out_hash.keys, in_out_hash.size
+    100.times do
+      degree = keys[rand(size)]
+      coefs = in_out_hash[degree]
+      assert_equal Polynomial[*coefs], Polynomial::Chebyshev.send(method_name, degree)
+    end
+  end
+  
+  def my_test_in_out_seq(in_out_hash, method_name)
+    in_out_hash.each_pair do |degree, coefs|
+      assert_equal Polynomial[*coefs], Polynomial::Chebyshev.send(method_name, degree)
+    end
+  end
+  
+  def test_cached_first_kind
+    my_test_in_out_rand(@@first_kind_in_out, :first_kind)
+    my_test_in_out_seq(@@first_kind_in_out, :first_kind)
+  end
+  
+  def test_uncached_first_kind
+    my_test_in_out_rand(@@first_kind_in_out, :uncached_first_kind)
+    my_test_in_out_seq(@@first_kind_in_out, :uncached_first_kind)
+  end
+    
+  # See {Wikipedia entry}[http://en.wikipedia.org/wiki/Chebyshev_polynomials] for trigonometric definitions.
+  #
+  def test_first_kind_evaluation
+    9.downto(0) do |n|
+      10.times do
+        x = 2*rand-1
+        expected = Math.cos(n*Math.acos(x))
+        actual = Polynomial::Chebyshev.first_kind(n).substitute(x)
+        assert_in_delta expected, actual, @@epsilon
+      end
+    end
+  end
+  
+  def test_cached_second_kind
+    my_test_in_out_rand(@@second_kind_in_out, :second_kind)
+    my_test_in_out_seq(@@second_kind_in_out, :second_kind)
+  end
+
+  def test_uncached_second_kind
+    my_test_in_out_rand(@@second_kind_in_out, :uncached_second_kind)
+    my_test_in_out_seq(@@second_kind_in_out, :uncached_second_kind)
+  end
+  
+  # See {Wikipedia entry}[http://en.wikipedia.org/wiki/Chebyshev_polynomials] for trigonometric definitions.
+  #
+  def test_second_kind_evaluation
+    9.downto(0) do |n|
+      10.times do
+        theta = 2*Math::PI*rand - Math::PI
+        expected = Math.sin((n+1)*theta)/Math.sin(theta)
+        actual = Polynomial::Chebyshev.second_kind(n).substitute(Math.cos(theta))
+        assert_in_delta expected, actual, @@epsilon
+      end
+    end
+  end
+  
+end
