@@ -1,10 +1,11 @@
-h1. polynomial
+h1. Polynomials in Ruby
 
-h1. &#x2192; 'polynomial'
+h1. polynomial
 
 
 h2. What
 
+Rich-featured single and multiple variables polynomials classes for Ruby.
 
 h2. Installing
 
@@ -12,16 +13,32 @@ h2. Installing
 
 h2. The basics
 
+<pre syntax="ruby">Polynomial.new(1, 2) #=> #<Polynomial:0x7f25286cea68 @coefs=[1, 2]></pre>
 
 h2. Demonstration of usage
 
+<pre syntax="ruby">
+foo = Polynomial.new(1, 2) #=> #<Polynomial:0x7f25286cea68 @coefs=[1, 2]>
+foo.to_s #=> "1 + 2*x"
+foo.plot # open gnuplot window with 'foo' plotted (require EasyPlot gem)
 
+bar = Polynomial.new(3) {|n| n+1 } #=> #<Polynomial:0x7f25287461a8 @coefs=[1, 2, 3, 4]>
+bar.to_s(:power_symbol=>'^') #=> "1 + 2*x + 3*x^2 + 4*x^3"
 
+require 'rational'
+baz = bar.quo(foo) #=> #<Polynomial:0x7f00a1ff0570 @coefs=[Rational(3, 4), Rational(1, 2), Rational(2, 1)]>
+baz.to_s #=> "(3/4) + (1/2)*x"
+</pre>
+
+<%
+=begin
 h2. Forum
 
 "http://groups.google.com/group/polynomial":http://groups.google.com/group/polynomial
 
 TODO - create Google Group - polynomial
+=end
+%>
 
 h2. How to submit patches
 

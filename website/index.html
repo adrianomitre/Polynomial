@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>
-      polynomial
+      Polynomials in Ruby
   </title>
   <script src="javascripts/rounded_corners_lite.inc.js" type="text/javascript"></script>
 <style>
@@ -30,20 +30,31 @@
 <body>
 <div id="main">
 
-    <h1>polynomial</h1>
+    <h1>Polynomials in Ruby</h1>
     <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/polynomial"; return false'>
       <p>Get Version</p>
-      <a href="http://rubyforge.org/projects/polynomial" class="numbers">0.5.2</a>
+      <a href="http://rubyforge.org/projects/polynomial" class="numbers">0.7.0</a>
     </div>
-    <h1>&amp;#x2192; &#8216;polynomial&#8217;</h1>
+    <h1>polynomial</h1>
 <h2>What</h2>
+<p>Rich-featured single and multiple variables polynomials classes for Ruby.</p>
 <h2>Installing</h2>
 <p><pre class='syntax'><span class="ident">sudo</span> <span class="ident">gem</span> <span class="ident">install</span> <span class="ident">polynomial</span></pre></p>
 <h2>The basics</h2>
+<p><pre class='syntax'><span class="constant">Polynomial</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">1</span><span class="punct">,</span> <span class="number">2</span><span class="punct">)</span> <span class="comment">#=&gt; #&lt;Polynomial:0x7f25286cea68 @coefs=[1, 2]&gt;</span></pre></p>
 <h2>Demonstration of usage</h2>
-<h2>Forum</h2>
-<p><a href="http://groups.google.com/group/polynomial">http://groups.google.com/group/polynomial</a></p>
-<p><span class="caps">TODO</span> &#8211; create Google Group &#8211; polynomial</p>
+<p><pre class='syntax'>
+<span class="ident">foo</span> <span class="punct">=</span> <span class="constant">Polynomial</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">1</span><span class="punct">,</span> <span class="number">2</span><span class="punct">)</span> <span class="comment">#=&gt; #&lt;Polynomial:0x7f25286cea68 @coefs=[1, 2]&gt;</span>
+<span class="ident">foo</span><span class="punct">.</span><span class="ident">to_s</span> <span class="comment">#=&gt; &quot;1 + 2*x&quot;</span>
+<span class="ident">foo</span><span class="punct">.</span><span class="ident">plot</span> <span class="comment"># open gnuplot window with 'foo' plotted (require EasyPlot gem)</span>
+
+<span class="ident">bar</span> <span class="punct">=</span> <span class="constant">Polynomial</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">3</span><span class="punct">)</span> <span class="punct">{|</span><span class="ident">n</span><span class="punct">|</span> <span class="ident">n</span><span class="punct">+</span><span class="number">1</span> <span class="punct">}</span> <span class="comment">#=&gt; #&lt;Polynomial:0x7f25287461a8 @coefs=[1, 2, 3, 4]&gt;</span>
+<span class="ident">bar</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">(</span><span class="symbol">:power_symbol=</span><span class="punct">&gt;'</span><span class="string">^</span><span class="punct">')</span> <span class="comment">#=&gt; &quot;1 + 2*x + 3*x^2 + 4*x^3&quot;</span>
+
+<span class="ident">require</span> <span class="punct">'</span><span class="string">rational</span><span class="punct">'</span>
+<span class="ident">baz</span> <span class="punct">=</span> <span class="ident">bar</span><span class="punct">.</span><span class="ident">quo</span><span class="punct">(</span><span class="ident">foo</span><span class="punct">)</span> <span class="comment">#=&gt; #&lt;Polynomial:0x7f00a1ff0570 @coefs=[Rational(3, 4), Rational(1, 2), Rational(2, 1)]&gt;</span>
+<span class="ident">baz</span><span class="punct">.</span><span class="ident">to_s</span> <span class="comment">#=&gt; &quot;(3/4) + (1/2)*x&quot;</span>
+</pre></p>
 <h2>How to submit patches</h2>
 <p>Read the <a href="http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/">8 steps for fixing other people&#8217;s code</a> and for section <a href="http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/#8b-google-groups">8b: Submit patch to Google Groups</a>, use the Google Group above.</p>
 <p><span class="caps">TODO</span> &#8211; pick <span class="caps">SVN</span> or Git instructions</p>
@@ -75,7 +86,7 @@ rake install_gem</pre>
 <h2>Contact</h2>
 <p>Comments are welcome. Send an email to <a href="mailto:FIXME"><span class="caps">FIXME</span> full name</a> email via the <a href="http://groups.google.com/group/polynomial">forum</a></p>
     <p class="coda">
-      <a href="FIXME email">FIXME full name</a>, 6th May 2008<br>
+      <a href="FIXME email">FIXME full name</a>, 18th November 2010<br>
       Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
     </p>
 </div>

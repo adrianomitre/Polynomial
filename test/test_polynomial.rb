@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
+
 require 'complex'
 require 'bigdecimal'
 require 'polynomial'
@@ -210,7 +211,11 @@ end
   ]
   def test_quomod
     @@quomod_data.each do |dividend, divisor, quotient, rest|
+      dividend_bak = dividend.dup
+      divisor_bak = begin divisor.dup rescue divisor end
       assert_equal [quotient, rest], dividend.quomod(divisor)
+      assert_equal dividend_bak, dividend
+      assert_equal divisor_bak, divisor
     end
     assert_raise(ArgumentError) { Poly[1,2,3].quomod(:foo) }
     assert_raise(ArgumentError) { Poly[1,2,3].quomod(nil) }
@@ -280,8 +285,12 @@ end
     assert_equal "1+0*x+3*x**2", Poly[1,0,3].to_s(:verbose=>true, :spaced=>false)
     assert_equal "-1-3*x^2", Poly[-1,0,-3].to_s(:power_symbol=>'^', :spaced=>false)
 
-    # Complex#to_s results in Ruby 1.8 and 1.9 are different
-    assert ["1 + (0 + 1i)*x", "1 + 1i*x"].include?(Poly[1,Complex(0,1)].to_s)
+    case RUBY_VERSION # Complex#to_s results in Ruby 1.8 and 1.9 are different
+    when /^1[.]9/
+      assert_equal "1 + (0 + 1i)*x", Poly[1,Complex(0,1)].to_s
+    else
+      assert_equal "1 + 1i*x", Poly[1,Complex(0,1)].to_s
+    end
     
     assert_equal "1 + (1 + 1i)*x", Poly[1,Complex(1,1)].to_s
     assert_equal "1 + x", Poly[1,Complex(1,0)].to_s
@@ -381,6 +390,7 @@ end
     q = Poly.new(2,3,5,7)
     assert_equal q, @one*q
     assert_equal @zero, q*@zero
+    assert @zero.zero?
   end
   
   # HELPER FUNCTIONS

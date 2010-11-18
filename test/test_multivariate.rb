@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
+
 require 'complex'
 require 'bigdecimal'
 require 'polynomial/multivariate'
@@ -39,6 +40,7 @@ class TestPoly < Test::Unit::TestCase
     assert_equal(0, q.degree(0))
     assert_equal(0, q.degree(1))
     assert_equal(3, q.degree(2))
+    assert_raise(RangeError) { q.degree(42) }
   end
 
   CoefficientsVariablesValues = {

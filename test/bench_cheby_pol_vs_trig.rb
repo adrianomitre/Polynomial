@@ -1,9 +1,8 @@
+require File.dirname(__FILE__) + '/test_helper.rb'
+
 require 'benchmark'
-
-$:.unshift File.join(File.dirname(__FILE__),'..','lib', 'saturator')
-
-require 'chebyshev'
-require 'bigmath_ext'
+require 'polynomial/chebyshev'
+require 'saturator/bigmath_ext' # Saturator gem is required
 include BigMath
 
 if $0 == __FILE__
@@ -12,7 +11,7 @@ if $0 == __FILE__
   n = 2**7
   x = BigDecimal(rand.to_s)
   prec = 20
-  a = Chebyshev.first_kind(m)
+  a = Polynomial::Chebyshev.first_kind(m)
   
   Benchmark.bmbm(7) do |foo|
     foo.report("trig:")  { n.times { cos(m*acos(x,prec), prec) } }

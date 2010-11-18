@@ -1,20 +1,37 @@
 = polynomial
 
-* FIX (url)
+* http://github.com/adrianomitre/Polynomial
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Rich-featured single and multiple variables polynomials classes for Ruby.
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
-* FIX (list of features or problems)
+* Implements all basic operations (+, -, *, /, quo), plus integral and derivatives.
+* Rich, configurable and robust conversion from and to strings.
+* Very flexible constructor interface.
+* Integration with EasyPlot for easy plotting.
+* Coefficients can be complex numbers.
+* Avoid changing coefficients types as much as possible, i.e., does not convert integers or rationals to float unless needed
+* Constructors for Legendre, Ultraspherical, and first and second kind Chebyshev polynomials.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
-
+  foo = Polynomial.new(1, 2) #=> #<Polynomial:0x7f25286cea68 @coefs=[1, 2]>
+  foo.to_s #=> "1 + 2*x"
+  foo.plot # open gnuplot window with 'foo' plotted (require EasyPlot gem)
+  
+  bar = Polynomial.new(3) {|n| n+1 } #=> #<Polynomial:0x7f25287461a8 @coefs=[1, 2, 3, 4]>
+  bar.to_s(:power_symbol=>'^') #=> "1 + 2*x + 3*x^2 + 4*x^3"
+  
+  require 'rational'
+  baz = bar.quo(foo) #=> #<Polynomial:0x7f00a1ff0570 @coefs=[Rational(3, 4), Rational(1, 2), Rational(2, 1)]>
+  baz.to_s #=> "(3/4) + (1/2)*x"
+  
 == REQUIREMENTS:
+
+MRI, JRuby or Rubinius as long as RUBY_VERSION >= 1.8.7.
 
 The following gems are soft requirements, i.e., Polynomial can be used without
 them, though with slightly reduced functionality:
@@ -29,7 +46,7 @@ them, though with slightly reduced functionality:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2008-2010 Adriano Mitre
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

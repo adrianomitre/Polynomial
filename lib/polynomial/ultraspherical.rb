@@ -1,7 +1,6 @@
-$:.unshift File.join(File.dirname(__FILE__), '..')
-
-require 'polynomial/chebyshev'
-require 'polynomial/legendre'
+my_path = File.dirname(File.expand_path(__FILE__))
+require File.join(my_path, 'chebyshev')
+require File.join(my_path, 'legendre')
 
 class Polynomial
 

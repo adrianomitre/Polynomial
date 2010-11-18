@@ -1,13 +1,5 @@
-begin
-  require 'handy_hash'
-rescue LoadError
-  $stderr.puts 'HandyHash not be loaded, abbreviations not enabled'
-  HandyHash ||= Hash
-  Hash.class_eval { alias merge_abbrv merge }
-end
-
-$:.unshift File.join(File.dirname(__FILE__), '..')
-require 'polynomial'
+my_path = File.dirname(File.expand_path(__FILE__))
+require File.join(my_path, '../polynomial')
 
 # TODO: consider building an writer for @terms which sorts the value
 #       prior to actually setting it.
@@ -16,7 +8,7 @@ class Multivariate < Polynomial
 
   attr_reader :vars, :terms
 
-  class <<self
+  class << self
     alias [] new
   end
 

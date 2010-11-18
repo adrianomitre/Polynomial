@@ -1,17 +1,25 @@
 begin
   require 'handy_hash'
 rescue LoadError
-  $stderr.puts 'HandyHash not be loaded, abbreviations not enabled'
-  HandyHash ||= Hash
-  Hash.class_eval { alias merge_abbrv merge }
+  unless defined? HandyHash
+    $stderr.puts 'HandyHash not be loaded, abbreviations not enabled'
+    HandyHash = Hash
+    Hash.class_eval { alias merge_abbrv merge }
+  end
 end
 
 # Polynomials on a single variable.
 #
 class Polynomial
 
-  class <<self
+  attr_reader :coefs
+  
+  class << self
     alias [] new
+  end
+  
+  def dup
+    Marshal.load(Marshal.dump(self))
   end
 
   # Creates a new polynomial with provided coefficients, which are interpreted
@@ -22,12 +30,12 @@ class Polynomial
   # from_string is called.
   #
   # Examples:
-  #   Polynomial.new(1, 2).to_s #=> 1 + 2*x
-  #   Polynomial.new(1, Complex(2,3)).to_s #=> 1 + (2+3i)*x
-  #   Polynomial.new(1) {|n| n+1 }.to_s #=> 1 + 2*x
-  #   Polynomial[3, 4, 5].to_s #=> 3 + 4*x + 5x**2
-  #   Polynomial[1 => 2, 3 => 4].to_s #=> 2*x + 4x**3
-  #   Polynomial['x^2-1', :power_symbol=>'^'].to_s #=> -1 + x**2
+  #   Polynomial.new(1, 2).to_s #=> "1 + 2*x"
+  #   Polynomial.new(1, Complex(2,3)).to_s #=> "1 + (2+3i)*x"
+  #   Polynomial.new(3) {|n| n+1 }.to_s #=> "1 + 2*x + 3*x**2 + 4*x**3"
+  #   Polynomial[3, 4, 5].to_s #=> "3 + 4*x + 5x**2"
+  #   Polynomial[1 => 2, 3 => 4].to_s #=> "2*x + 4x**3"
+  #   Polynomial.new('x^2-1', :power_symbol=>'^').to_s #=> "-1 + x**2"
   #
   def initialize(*coefs)
     case coefs[0]
@@ -48,6 +56,7 @@ class Polynomial
       end
     end
     @coefs = Polynomial.remove_trailing_zeroes(coefs)
+    @coefs.freeze    
   end
   
   FromStringDefaults = HandyHash[
@@ -86,12 +95,6 @@ class Polynomial
     total
   end
 
-  # Returns true if (and only if) the polynomial is null.
-  #
-  def zero?
-    @coefs == [0]
-  end
-
   # Returns an array with the 1st, 2nd, ..., +degree+ derivatives.
   # These are the only possibly non null derivatives, subsequent ones would
   # necesseraly be zero.
@@ -125,7 +128,7 @@ class Polynomial
         self + Polynomial.new(other)
       else
         small, big = [self, other].sort
-        a = big.coefs
+        a = big.coefs.dup
         for n in 0 .. small.degree
           a[n] += small.coefs[n]
         end
@@ -368,8 +371,6 @@ class Polynomial
     $stderr.puts 'EasyPlot could not be loaded, thus plotting convenience methods were not defined.'
   end
 
-  attr_reader :coefs
-  
   # Compares with another Polynomial by degrees then coefficients.
   #
   def <=>(other)
@@ -490,12 +491,42 @@ class Polynomial
   Zero = new([0])
   Unity = new([1])
 
+  # Returns true if and only if the polynomial is null.
+  #
   def zero?
     self == Zero
   end
 
+  # Returns true if and only if the polynomial is unity.
+  #
   def unity?
     self == Unity
   end
   
+=begin
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+#OBSOLETE CODE:
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+  # Evaluates Polynomial at n equidistant points: x0, x0 + dx, ... , x0 + n*dx
+  # using forward differencing algorithm (approximate if degree > 1)
+  #
+  # TODO: implement it
+  #
+  # ref: http://www.cosc.brocku.ca/~cspress/HelloWorld/1999/04-apr/rendering_bezier_forms.html
+  #      http://www.niksula.cs.hut.fi/~hkankaan/Homepages/bezierfast.html
+  #
+  def sub_fd(x0, dx, n)
+    ds = self.derivatives.map {|d| d.substitute_single(x0)}
+
+    total = @coefs.last
+    @coefs[0..-2].reverse.each do |a|
+      total = total * x + a
+    end
+    total
+  end
+
+=end
+ 
 end

@@ -5,3 +5,10 @@ task :ruby_env do
     "ruby"
   end unless defined? RUBY_APP
 end
+
+task :clean_rbc do
+  cmd = %q[find -regex '^.*\.rbc$' -exec rm '{}' \;]
+  puts(cmd)
+  system(cmd)
+end
+

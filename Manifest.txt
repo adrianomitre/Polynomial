@@ -23,8 +23,9 @@ test/bench_cheby_pol_vs_trig.rb
 test/test_chebyshev.rb
 test/test_helper.rb
 test/test_legendre.rb
-test/test_multivariate
+test/test_multivariate.rb
 test/test_polynomial.rb
+test/test_suite.rb*
 test/test_ultraspherical.rb
 website/index.html
 website/index.txt
