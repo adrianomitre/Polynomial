@@ -1,5 +1,9 @@
 = polynomial
 
+Website:
+* http://adrianomitre.github.com/Polynomial
+
+Repository:
 * http://github.com/adrianomitre/Polynomial
 
 == DESCRIPTION:
