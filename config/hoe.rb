@@ -2,11 +2,11 @@ require 'polynomial/version'
 
 AUTHOR = 'Adriano Brito Mitre'  # can also be an array of Authors
 EMAIL = "adriano@mitre.com.br"
-DESCRIPTION = "description of gem"
+DESCRIPTION = "Rich-featured single and multiple variables polynomials classes for Ruby."
 GEM_NAME = 'polynomial' # what ppl will type to install your gem
 RUBYFORGE_PROJECT = 'polynomial' # The unix name for your project
-HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
-DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
+HOMEPATH = "http://adrianomitre.github.com/Polynomial/website/index.html"
+DOWNLOAD_PATH = "https://github.com/adrianomitre/Polynomial/archives/master"
 EXTRA_DEPENDENCIES = [
 #  ['activesupport', '>= 1.3.1']
 ]    # An array of rubygem dependencies [name, version]

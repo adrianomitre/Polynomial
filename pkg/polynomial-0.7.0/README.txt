@@ -1,0 +1,72 @@
+= polynomial
+
+Website:
+* http://adrianomitre.github.com/Polynomial
+
+Repository:
+* http://github.com/adrianomitre/Polynomial
+
+== DESCRIPTION:
+
+Rich-featured single and multiple variables polynomials classes for Ruby.
+
+== FEATURES:
+
+* Implements all basic operations (+, -, *, /, quo), plus integral and derivatives.
+* Rich, configurable and robust conversion from and to strings.
+* Very flexible constructor interface.
+* Integration with EasyPlot for easy plotting.
+* Coefficients can be complex numbers.
+* Avoid changing coefficients types as much as possible, i.e., does not convert integers or rationals to float unless needed
+* Constructors for Legendre, Ultraspherical, and first and second kind Chebyshev polynomials.
+
+== SYNOPSIS:
+
+  foo = Polynomial.new(1, 2) #=> #<Polynomial:0x7f25286cea68 @coefs=[1, 2]>
+  foo.to_s #=> "1 + 2*x"
+  foo.plot # open gnuplot window with 'foo' plotted (require EasyPlot gem)
+  
+  bar = Polynomial.new(3) {|n| n+1 } #=> #<Polynomial:0x7f25287461a8 @coefs=[1, 2, 3, 4]>
+  bar.to_s(:power_symbol=>'^') #=> "1 + 2*x + 3*x^2 + 4*x^3"
+  
+  require 'rational'
+  baz = bar.quo(foo) #=> #<Polynomial:0x7f00a1ff0570 @coefs=[Rational(3, 4), Rational(1, 2), Rational(2, 1)]>
+  baz.to_s #=> "(3/4) + (1/2)*x"
+  
+== REQUIREMENTS:
+
+MRI, JRuby or Rubinius as long as RUBY_VERSION >= 1.8.7.
+
+The following gems are soft requirements, i.e., Polynomial can be used without
+them, though with slightly reduced functionality:
+* HandyHash
+* EasyPlot
+
+== INSTALL:
+
+* sudo gem install polynomial
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2008-2010 Adriano Mitre
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
