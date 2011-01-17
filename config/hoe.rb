@@ -1,8 +1,9 @@
-require 'polynomial/version'
+require 'polynomial'
 
-AUTHOR = 'Adriano Brito Mitre'  # can also be an array of Authors
+AUTHOR = 'Adriano Mitre'  # can also be an array of Authors
 EMAIL = "adriano@mitre.com.br"
-DESCRIPTION = "Rich-featured single and multiple variables polynomials classes for Ruby."
+DESCRIPTION = <<EOS
+EOS
 GEM_NAME = 'polynomial' # what ppl will type to install your gem
 RUBYFORGE_PROJECT = 'polynomial' # The unix name for your project
 HOMEPATH = "http://adrianomitre.github.com/Polynomial/website/index.html"
@@ -34,7 +35,7 @@ end
 REV = nil
 # UNCOMMENT IF REQUIRED:
 # REV = YAML.load(`svn info`)['Revision']
-VERS = Polynomial::VERSION::STRING + (REV ? ".#{REV}" : "")
+VERS = Polynomial::VERSION
 RDOC_OPTS = ['--quiet', '--title', 'polynomial documentation',
     "--opname", "index.html",
     "--line-numbers",
@@ -50,14 +51,18 @@ end
 
 # Generate all the Rake tasks
 # Run 'rake -T' to see list of generated tasks (from gem root directory)
-$hoe = Hoe.new(GEM_NAME, VERS) do |p|
+$hoe = Hoe.spec(GEM_NAME) do |p|
   p.developer(AUTHOR, EMAIL)
   p.description = DESCRIPTION
   p.summary = DESCRIPTION
   p.url = HOMEPATH
+  p.version = VERS
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
   p.test_globs = ["test/**/test_*.rb", "test/**/tc_*.rb"]
   p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']  #An array of file patterns to delete on clean.
+
+  p.readme_file = 'README.rdoc'
+  p.extra_rdoc_files << 'README.rdoc'
 
   #~ p.files = FileList["{tests,lib}/**/*"].exclude("rdoc").to_a 
 
@@ -74,4 +79,4 @@ CHANGES = $hoe.paragraphs_of('History.txt', 0..1).join("\\n\\n")
 PATH    = (RUBYFORGE_PROJECT == GEM_NAME) ? RUBYFORGE_PROJECT : "#{RUBYFORGE_PROJECT}/#{GEM_NAME}"
 $hoe.remote_rdoc_dir = File.join(PATH.gsub(/^#{RUBYFORGE_PROJECT}\/?/,''), 'rdoc')
 $hoe.rsync_args = '-av --delete --ignore-errors'
-#~ $hoe.spec.post_install_message = File.open(File.dirname(__FILE__) + "/../PostInstall.txt").read rescue ""
+$hoe.spec.post_install_message = File.open(File.dirname(__FILE__) + "/../PostInstall.txt").read rescue ""
